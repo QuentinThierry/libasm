@@ -1,11 +1,9 @@
 AS= nasm
-ASFLAGS= -f
-FORMAT= elf64
-
+ASFLAGS= -g -f elf64
 LD=ld
 
 SRCS_DIR=	srcs/
-SRCS_LIST=	ft_strlen.s
+SRCS_LIST=	ft_strlen.s ft_strcpy.s
 SRCS=	$(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 NAME= libasm.a
@@ -15,7 +13,7 @@ OBJ_LIST= ${SRCS_LIST:.s=.o}
 OBJ=	$(addprefix $(OBJ_DIR), $(OBJ_LIST))
 
 ${OBJ_DIR}%.o: ${SRCS_DIR}%.s
-	$(AS) $(ASFLAGS) $(FORMAT) -o $@ $<
+	$(AS) $(ASFLAGS) -o $@ $<
 
 all: $(NAME)
 
