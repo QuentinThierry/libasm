@@ -24,7 +24,7 @@ $(OBJ_DIR):
 	mkdir -p obj/
 
 test:
-	gcc 
+	make && gcc main.c -g -L. -lasm && valgrind ./a.out
 
 bonus: all
 
