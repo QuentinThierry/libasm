@@ -8,7 +8,7 @@ ft_strlen:
 		inc rdi
 		jmp loop
 	done:
-		ret
+		leave
 
 ; ft_strlen:
 ; 	mov rax, 0
