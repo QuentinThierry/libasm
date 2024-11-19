@@ -10,7 +10,8 @@
 #define assert_equal_str3(x, y, z) (strcmp(x, y) == 0) && (strcmp(y, z) == 0) ? "\e[32mTrue\e[0m" : "\e[31mFalse\e[0m"
 
 extern size_t ft_strlen(const char *);
-extern char *ft_strcpy(char *, char *);
+extern char *ft_strcpy(char *, const char *);
+extern int ft_strcmp(const char *, const char *);
 
 void test_strlen()
 {
@@ -85,10 +86,64 @@ void test_strcpy()
 	}
 }
 
+void	test_strcmp()
+{
+	{
+		char *str_ori = "coucoa";
+		char *str_mine = "coucob";
+		int res_ori = strcmp(str_ori, str_mine);
+		int res_mine = ft_strcmp(str_ori, str_mine);
+
+		printf("expected : %d, got : %d | %s\n", res_ori, res_mine, assert_equal(res_ori, res_mine));
+	}
+	{
+		char *str_ori = "coucob";
+		char *str_mine = "coucoa";
+		int res_ori = strcmp(str_ori, str_mine);
+		int res_mine = ft_strcmp(str_ori, str_mine);
+
+		printf("expected : %d, got : %d | %s\n", res_ori, res_mine, assert_equal(res_ori, res_mine));
+	}
+	{
+		char *str_ori = "a";
+		char *str_mine = "a";
+		int res_ori = strcmp(str_ori, str_mine);
+		int res_mine = ft_strcmp(str_ori, str_mine);
+
+		printf("expected : %d, got : %d | %s\n", res_ori, res_mine, assert_equal(res_ori, res_mine));
+	}
+	{
+		char *str_ori = "";
+		char *str_mine = "";
+		int res_ori = strcmp(str_ori, str_mine);
+		int res_mine = ft_strcmp(str_ori, str_mine);
+
+		printf("expected : %d, got : %d | %s\n", res_ori, res_mine, assert_equal(res_ori, res_mine));
+	}
+	{
+		char *str_ori = "string";
+		char *str_mine = "strin2";
+		int res_ori = strcmp(str_ori, str_mine);
+		int res_mine = ft_strcmp(str_ori, str_mine);
+
+		printf("expected : %d, got : %d | %s\n", res_ori, res_mine, assert_equal(res_ori > 0, res_mine > 0));
+	}
+	{
+		char *str_ori = "strin2";
+		char *str_mine = "string";
+		int res_ori = strcmp(str_ori, str_mine);
+		int res_mine = ft_strcmp(str_ori, str_mine);
+
+		printf("expected : %d, got : %d | %s\n", res_ori, res_mine, assert_equal(res_ori < 0, res_mine < 0));
+	}
+}
+
 
 int main()
 {
 	test_strlen();
 	printf("\n");
 	test_strcpy();
+	printf("\n");
+	test_strcmp();
 }
