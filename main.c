@@ -14,7 +14,7 @@
 extern size_t ft_strlen(const char *s);
 extern char *ft_strcpy(char *dest, const char *src);
 extern int ft_strcmp(const char *dest, const char *src);
-extern int ft_write(int fd, const void *buf, size_t count);
+extern ssize_t ft_write(int fd, const void *buf, size_t count);
 
 void test_strlen()
 {
