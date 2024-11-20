@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <fcntl.h>
 #include "BIG_STRINGS.h"
 
 #define assert_equal(x, y) (x) == (y) ? "\e[32mTrue\e[0m" : "\e[31mFalse\e[0m"
@@ -140,15 +141,46 @@ void test_strcmp()
 	}
 }
 
-// void test_write()
-// {
-// 	int a = ft_write(1, "salut", 5);
+void test_write()
+{
+	{
+		// ON STDOUT / SUCCESS
+		errno = 0;
+		int res_expect = write(1, "hello\n", 6);
+		int errno_expect = errno;
+		errno = 0;
+		int res_mine = ft_write(1, "hello\n", 6);
+		int errno_mine = errno;
+		printf("expected : %d, got : %d | %s\n", res_expect, res_mine, assert_equal(res_expect, res_mine));
+		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+	}
+	{
+		// BAD FILE DESCRIPTOR / EBADF
+		errno = 0;
+		int res_expect = write(13, "hello\n", 6);
+		int errno_expect = errno;
+		errno = 0;
+		int res_mine = ft_write(13, "hello\n", 6);
+		int errno_mine = errno;
+		printf("expected : %d, got : %d | %s\n", res_expect, res_mine, assert_equal(res_expect, res_mine));
+		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+	}
+	{
+		// BAD BUFFER / EFAULT
+		int fd_no_perm = open("file_no_perm", O_CREAT | O_RDWR, 0777);
 
-// 	printf(" %d\n", a);
-
-// 	printf("%s\n", strerror(errno));
-	
-// }
+		errno = 0;
+		int res_expect = write(fd_no_perm, NULL, 6);
+		int errno_expect = errno;
+		errno = 0;
+		int res_mine = ft_write(fd_no_perm, NULL, 6);
+		int errno_mine = errno;
+		printf("expected : %d, got : %d | %s\n", res_expect, res_mine, assert_equal(res_expect, res_mine));
+		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+		close(fd_no_perm);
+		unlink("file_no_perm");
+	}
+}
 
 
 int main()
@@ -159,5 +191,5 @@ int main()
 	printf("\n");
 	test_strcmp();
 	printf("\n");
-	// test_write();
+	test_write();
 }
