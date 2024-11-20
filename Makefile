@@ -3,7 +3,7 @@ ASFLAGS= -g -f elf64
 LD=ld
 
 SRCS_DIR=	srcs/
-SRCS_LIST=	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s
+SRCS_LIST=	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s
 SRCS=	$(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 NAME= libasm.a

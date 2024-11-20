@@ -15,6 +15,7 @@ extern size_t ft_strlen(const char *s);
 extern char *ft_strcpy(char *dest, const char *src);
 extern int ft_strcmp(const char *dest, const char *src);
 extern ssize_t ft_write(int fd, const void *buf, size_t count);
+extern ssize_t ft_read(int fd, void *buf, size_t count);
 
 void test_strlen()
 {
@@ -167,18 +168,56 @@ void test_write()
 	}
 	{
 		// BAD BUFFER / EFAULT
-		int fd_no_perm = open("file_no_perm", O_CREAT | O_RDWR, 0777);
+		int fd_file = open("file_name", O_CREAT | O_RDWR, 0777);
 
 		errno = 0;
-		int res_expect = write(fd_no_perm, NULL, 6);
+		int res_expect = write(fd_file, NULL, 6);
 		int errno_expect = errno;
 		errno = 0;
-		int res_mine = ft_write(fd_no_perm, NULL, 6);
+		int res_mine = ft_write(fd_file, NULL, 6);
 		int errno_mine = errno;
 		printf("expected : %d, got : %d | %s\n", res_expect, res_mine, assert_equal(res_expect, res_mine));
 		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
-		close(fd_no_perm);
-		unlink("file_no_perm");
+		close(fd_file);
+		unlink("file_name");
+	}
+}
+
+void test_read()
+{
+	{
+		// ON 'file_name' / SUCCESS
+		int file_fd = open("file_name", O_RDWR | O_CREAT | O_TRUNC, 0777);
+		write(file_fd, "this is a text", sizeof("this is a text"));
+		lseek(file_fd, 0, SEEK_SET);
+
+		errno = 0;
+		char buf_except[100] = {0};
+		int res_expect = read(file_fd, buf_except, sizeof("this is a text"));
+		int errno_mine = errno;
+		lseek(file_fd, 0, SEEK_SET);
+
+		errno = 0;
+		char buf_mine[100] = {0};
+		int res_mine = ft_read(file_fd, buf_mine, sizeof("this is a text"));
+		int errno_expect = errno;
+
+		printf("expected : `%s` (%d), got : `%s` (%d) | %s\n", buf_except, res_expect, buf_mine, res_expect, assert_equal_str(assert_equal(res_expect, res_mine), assert_equal_str(buf_except, buf_mine)));
+		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+	}
+	{
+		// BAD FILE DESCRIPTOR / EBADF
+		int file_fd = open("file_name", O_RDWR | O_CREAT | O_TRUNC, 0777);
+
+		errno = 0;
+		int res_expect = read(-1, NULL, 10);
+		int errno_mine = errno;
+
+		errno = 0;
+		int res_mine = ft_read(-1, NULL, 10);
+		int errno_expect = errno;
+		printf("-Should not read-\n");
+		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
 	}
 }
 
@@ -192,4 +231,6 @@ int main()
 	test_strcmp();
 	printf("\n");
 	test_write();
+	printf("\n");
+	test_read();
 }
