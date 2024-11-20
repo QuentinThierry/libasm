@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
@@ -207,20 +207,36 @@ void test_read()
 	}
 	{
 		// BAD FILE DESCRIPTOR / EBADF
-		int file_fd = open("file_name", O_RDWR | O_CREAT | O_TRUNC, 0777);
-
 		errno = 0;
-		int res_expect = read(-1, NULL, 10);
+		read(-1, NULL, 10);
 		int errno_mine = errno;
 
 		errno = 0;
-		int res_mine = ft_read(-1, NULL, 10);
+		ft_read(-1, NULL, 10);
 		int errno_expect = errno;
 		printf("-Should not read-\n");
 		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
 	}
 }
 
+void test_strdup()
+{
+	// no malloc protections, it's a test
+	char *test_string = "this_is_a_string";
+
+	errno = 0;
+	char *res_expect = strdup(test_string);
+	int errno_expect = errno;
+
+	char *res_mine = strdup(test_string);
+	int errno_mine = errno;
+
+	printf("expected : `%s`, got : `%s` | %s\n", res_expect, res_mine, assert_equal_str(res_expect, res_mine));
+	printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+
+	free(res_expect);
+	free(res_mine);
+}
 
 int main()
 {
@@ -233,4 +249,6 @@ int main()
 	test_write();
 	printf("\n");
 	test_read();
+	printf("\n");
+	test_strdup();
 }
