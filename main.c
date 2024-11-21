@@ -261,15 +261,16 @@ void test_strdup()
 
 int main()
 {
+	printf("\e[36m---== ft_strlen ==---\e[0m\n");
 	test_strlen();
-	printf("\e[36m---===---\e[0m\n");
+	printf("\e[36m---== ft_strcpy ==---\e[0m\n");
 	test_strcpy();
-	printf("\e[36m---===---\e[0m\n");
+	printf("\e[36m---== ft_strcmp ==---\e[0m\n");
 	test_strcmp();
-	printf("\e[36m---===---\e[0m\n");
+	printf("\e[36m---== ft_write ==---\e[0m\n");
 	test_write();
-	printf("\e[36m---===---\e[0m\n");
+	printf("\e[36m---== ft_read ==---\e[0m\n");
 	test_read();
-	printf("\e[36m---===---\e[0m\n");
+	printf("\e[36m---== ft_strdup ==---\e[0m\n");
 	test_strdup();
 }
