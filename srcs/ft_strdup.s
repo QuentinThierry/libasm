@@ -7,6 +7,7 @@ extern malloc
 
 ft_strdup:
 	push rbp
+	push rbx				; save rbx (caller saved)
 	mov rbp, rsp
 
 	mov rbx, rdi			; save the original ptr
@@ -23,5 +24,6 @@ ft_strdup:
 	call ft_strcpy			; copy the string
 
 	exit_func:
+		pop rbx
 		pop rbp
 		ret
