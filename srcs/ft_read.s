@@ -15,5 +15,5 @@ ft_read:
 		mov rbx, rax
 		call __errno_location	; find errno location
 		mov dword [rax], ebx	; derefence errno location and set it to ebx
-		mov eax, -1
+		mov rax, -1
 		ret
