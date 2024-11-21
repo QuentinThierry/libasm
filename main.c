@@ -18,6 +18,8 @@ extern ssize_t ft_write(int fd, const void *buf, size_t count);
 extern ssize_t ft_read(int fd, void *buf, size_t count);
 extern char *ft_strdup(const char *s);
 
+extern int ft_atoi_base(char *str, char *base);
+
 void test_strlen()
 {
 	const char *ptr_strlen = "hello";
@@ -259,18 +261,91 @@ void test_strdup()
 	}
 }
 
+int is_in_base(char c, char *base)
+{
+	int i = 0;
+	while (base[i])
+	{
+		if (c == base[i])
+			return i;
+		i++;
+	}
+	return -1;
+}
+
+// bonus
+
+void test_atoi_base(char *str, char *base)
+{
+	printf("%d\n", ft_atoi_base(str, base));
+
+	// FUNCTION check_base (size <= 1, 2x meme char, +,- ou whitespace)
+	// if (!str || !base)
+	// 	return 0;
+	// int size_base = ft_strlen(base);
+	// if (size_base <= 1)
+	// 	return 0;
+	// for (int i = 0; i < size_base; i++)
+	// {
+	// 	if ((base[i] >= 8 && base[i] <= 13) || base[i] == 32)
+	// 		return 0;
+	// 	for (int j = i + 1; j < size_base; j++)
+	// 	{
+	// 		if (base[i] == base[j])
+	// 			return 0;
+	// 	}
+	// }
+
+
+	// // skip white spaces
+	// int i;
+	// for (i = 0; str[i]; i++)
+	// {
+	// 	if (str[i] < 8 || (str[i] > 13 && str[i] != 32))
+	// 		break;
+	// }
+
+	// // function get_sign
+	// int sign = 1;
+	// for (; str[i]; i++)
+	// {
+	// 	if (str[i] == '+')
+	// 		continue;
+	// 	else if (str[i] == '-')
+	// 		sign *= -1; // neg
+	// 	else
+	// 		break;
+	// }
+
+	// // ft_atoi_base
+	// int pos_char;
+	// int return_value = 0;
+	// while (str[i])
+	// {
+	// 	pos_char = is_in_base(str[i], base);
+	// 	if (pos_char == -1)
+	// 		break;
+	// 	return_value *= size_base;
+	// 	return_value += pos_char;
+	// 	i++;
+	// }
+	// return return_value * sign;
+}
+
+
 int main()
 {
-	printf("\e[36m---== ft_strlen ==---\e[0m\n");
-	test_strlen();
-	printf("\e[36m---== ft_strcpy ==---\e[0m\n");
-	test_strcpy();
-	printf("\e[36m---== ft_strcmp ==---\e[0m\n");
-	test_strcmp();
-	printf("\e[36m---== ft_write ==---\e[0m\n");
-	test_write();
-	printf("\e[36m---== ft_read ==---\e[0m\n");
-	test_read();
-	printf("\e[36m---== ft_strdup ==---\e[0m\n");
-	test_strdup();
+	test_atoi_base("4", "0123");
+	// printf("\e[36m---== ft_strlen ==---\e[0m\n");
+	// test_strlen();
+	// printf("\e[36m---== ft_strcpy ==---\e[0m\n");
+	// test_strcpy();
+	// printf("\e[36m---== ft_strcmp ==---\e[0m\n");
+	// test_strcmp();
+	// printf("\e[36m---== ft_write ==---\e[0m\n");
+	// test_write();
+	// printf("\e[36m---== ft_read ==---\e[0m\n");
+	// test_read();
+	// printf("\e[36m---== ft_strdup ==---\e[0m\n");
+	// test_strdup();
 }
