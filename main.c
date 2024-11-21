@@ -16,6 +16,7 @@ extern char *ft_strcpy(char *dest, const char *src);
 extern int ft_strcmp(const char *dest, const char *src);
 extern ssize_t ft_write(int fd, const void *buf, size_t count);
 extern ssize_t ft_read(int fd, void *buf, size_t count);
+extern char *ft_strdup(const char *s);
 
 void test_strlen()
 {
@@ -204,6 +205,8 @@ void test_read()
 
 		printf("expected : `%s` (%d), got : `%s` (%d) | %s\n", buf_except, res_expect, buf_mine, res_expect, assert_equal_str(assert_equal(res_expect, res_mine), assert_equal_str(buf_except, buf_mine)));
 		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+		close(file_fd);
+		unlink("file_name");
 	}
 	{
 		// BAD FILE DESCRIPTOR / EBADF
@@ -222,33 +225,51 @@ void test_read()
 void test_strdup()
 {
 	// no malloc protections, it's a test
-	char *test_string = "this_is_a_string";
+	{
+		char *test_string = "this_is_a_string";
 
-	errno = 0;
-	char *res_expect = strdup(test_string);
-	int errno_expect = errno;
+		errno = 0;
+		char *res_expect = strdup(test_string);
+		int errno_expect = errno;
 
-	char *res_mine = strdup(test_string);
-	int errno_mine = errno;
+		errno = 0;
+		char *res_mine = ft_strdup(test_string);
+		int errno_mine = errno;
 
-	printf("expected : `%s`, got : `%s` | %s\n", res_expect, res_mine, assert_equal_str(res_expect, res_mine));
-	printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+		printf("expected : `%s`, got : `%s` | %s\n", res_expect, res_mine, assert_equal_str(res_expect, res_mine));
+		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+		free(res_expect);
+		free(res_mine);
+	}
+	{
+		char *test_string = "";
 
-	free(res_expect);
-	free(res_mine);
+		errno = 0;
+		char *res_expect = strdup(test_string);
+		int errno_expect = errno;
+
+		errno = 0;
+		char *res_mine = ft_strdup(test_string);
+		int errno_mine = errno;
+
+		printf("expected : `%s`, got : `%s` | %s\n", res_expect, res_mine, assert_equal_str(res_expect, res_mine));
+		printf("expected errno : `%s`, my errno : `%s` | %s\n", strerror(errno_expect), strerror(errno_mine), assert_equal_str(strerror(errno_expect), strerror(errno_mine)));
+		free(res_expect);
+		free(res_mine);
+	}
 }
 
 int main()
 {
 	test_strlen();
-	printf("\n");
+	printf("\e[36m---===---\e[0m\n");
 	test_strcpy();
-	printf("\n");
+	printf("\e[36m---===---\e[0m\n");
 	test_strcmp();
-	printf("\n");
+	printf("\e[36m---===---\e[0m\n");
 	test_write();
-	printf("\n");
+	printf("\e[36m---===---\e[0m\n");
 	test_read();
-	printf("\n");
+	printf("\e[36m---===---\e[0m\n");
 	test_strdup();
 }
