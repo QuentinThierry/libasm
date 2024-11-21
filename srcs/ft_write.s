@@ -14,6 +14,6 @@ ft_write:
 		neg rax
 		mov rbx, rax
 		call __errno_location	; find errno location
-		mov dword [rax], ebx	; derefence errno location and set it to ebx
+		mov dword [rax], ebx	; derefence errno location and set it to ebx, errno is 32 bits long
 		mov rax, -1
 		ret
