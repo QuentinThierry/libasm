@@ -6,61 +6,70 @@ extern ft_strlen
 
 
 ; rdi=char
-is_white_space:
-	cmp rdi, 32
+is_illegal_base_char:
+	cmp rdi, ' '
 	je .true
-	cmp rdi, 8
-	jle .false
-	cmp rdi, 13
-	jge .false
+	cmp rdi, '+'
+	je .true
+	cmp rdi, '-'
+	je .true
+	cmp rdi, 8			; rdi < 8 -> not illegal
+	je .false
+	cmp rdi, 13			; rdi > 13 -> not illegal
+	je .false
 
-	.false
+	.false:
 	mov rax, 0
 	ret
-	.true
+	.true:
 	mov rax, 1
 	ret
 
 ; rdi=base
 check_base:
-	push rbx					; save
-	; mov qword [rsp - 8], rdi	; stack rdi ; TODO check if rsp or rbp
+	push rbx						; save
+	push r12
+	mov r12, rdi					; stack rdi ; TODO check if rsp or rbp
 	call ft_strlen
 	cmp rax, 1
-	jle .on_error				; size is <= 1
-	mov rbx, rax				; rbx is size of base
+	jle .on_error					; size is <= 1
+	mov rbx, rax					; rbx is size of base
 	
-	mov rcx, 0
-	.loop1:
-		cmp rcx, rbx
-		jne .end_loop1
+	mov rdx, 0
+	.loop1:							; for all elements in base (rdx)
+		cmp rdx, rbx
+		je .end_loop1
 
-		call is_white_space		; check if base has whitespace
-		cmp rax, 0
+		xor rdi, rdi
+		mov dil, byte [r12 + rdx]
+		call is_illegal_base_char	; check if base has whitespace or +-
+		cmp rax, 1
 		je .on_error
 
-		mov rdx, rcx			; set start loop to rcx + 1
+		mov rcx, rdx				; set start loop to rdx + 1
 		inc rcx
-		.loop2:
-			cmp rcx, rbx		; end loop if its the end of base
+		.loop2:						; for all elements in base from rdx to end (rbx)
+			cmp rcx, rbx
 			je .end_loop2
-			mov al, byte [rsp - 8 + rdx]
-			cmp byte [rsp - 8 + rcx], al 	; if base[i] == base[j]
+			mov al, byte [r12 + rcx]
+			cmp byte [r12 + rdx], al 	; if base[i] == base[j]
 			je .on_error
-			inc rdx
+			inc rcx
 			jmp .loop2
 
 		.end_loop2:
-		inc rcx
+		inc rdx
 		jmp .loop1
 
 	.end_loop1:
+	pop r12
 	pop rbx
 	mov rax, 1
 	ret
 
 	.on_error:
-	xor rax, rax
+	mov rax, 0
+	pop r12
 	pop rbx
 	ret
 
