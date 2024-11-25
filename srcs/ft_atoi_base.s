@@ -7,15 +7,15 @@ extern ft_strlen
 
 ; rdi=char
 is_illegal_base_char:
-	cmp rdi, ' '
+	cmp dil, ' '
 	je .true
-	cmp rdi, '+'
+	cmp dil, '+'
 	je .true
-	cmp rdi, '-'
+	cmp dil, '-'
 	je .true
-	cmp rdi, 8			; rdi < 8 -> not illegal
+	cmp dil, 8			; dil < 8 -> not illegal
 	je .false
-	cmp rdi, 13			; rdi > 13 -> not illegal
+	cmp dil, 13			; dil > 13 -> not illegal
 	je .false
 
 	.false:
@@ -40,7 +40,6 @@ check_base:
 		cmp rdx, rbx
 		je .end_loop1
 
-		xor rdi, rdi
 		mov dil, byte [r12 + rdx]
 		call is_illegal_base_char	; check if base has whitespace or +-
 		cmp rax, 1
