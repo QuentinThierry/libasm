@@ -44,8 +44,8 @@ is_illegal_char:
 ; rdi=base
 check_base:
 	push rbx						; save ; TODO: rbp
-	push r12
-	mov r12, rdi					; stack rdi
+	push r11
+	mov r11, rdi					; stack rdi
 	call ft_strlen
 	cmp rax, 1
 	jle .on_error					; size is <= 1
@@ -56,8 +56,8 @@ check_base:
 		cmp rdx, rbx
 		je .end_loop1
 
-		mov dil, byte [r12 + rdx]
-		call is_illegal_char	; check if base has whitespace or +-
+		mov dil, byte [r11 + rdx]
+		call is_illegal_char		; check if base has whitespace or +-
 		cmp rax, 1
 		je .on_error
 
@@ -66,8 +66,8 @@ check_base:
 		.loop2:						; for all elements in base from rdx to end (rbx)
 			cmp rcx, rbx
 			je .end_loop2
-			mov al, byte [r12 + rcx]
-			cmp byte [r12 + rdx], al 	; if base[i] == base[j]
+			mov al, byte [r11 + rcx]
+			cmp byte [r11 + rdx], al 	; if base[i] == base[j]
 			je .on_error
 			inc rcx
 			jmp .loop2
@@ -77,14 +77,14 @@ check_base:
 		jmp .loop1
 
 	.end_loop1:
-	pop r12
+	pop r11
 	pop rbx
 	mov rax, 1
 	ret
 
 	.on_error:
 	mov rax, 0
-	pop r12
+	pop r11
 	pop rbx
 	ret
 
@@ -192,7 +192,6 @@ get_value:
 ; rdi=str, rsi=base
 ft_atoi_base:
 	push rbp					; save base pointer
-	push r12
 	mov rbp, rsp
 
 	mov rax, rdi
@@ -200,28 +199,27 @@ ft_atoi_base:
 	cmp rax, 0					; compare AND res to 0
 	je .fast_return				; if a ptr is NULL, error
 
-	mov r12, rdi
+	mov r11, rdi
 	mov rdi, rsi
 	call check_base				; check if the base is ok
 	cmp rax, 0
 	je .fast_return
 
-	mov rdi, r12
+	mov rdi, r11
 	call skip_white_space
-	add r12, rax				; move pointer to skip whitespaces
+	add r11, rax				; move pointer to skip whitespaces
 
 	sub rsp, 16					; allocate 2 qword on stack (one for rdi address, one for alignment)
-	mov qword [rsp + 8], r12
+	mov qword [rsp + 8], r11
 
 	call get_sign
-	mov r12, [rsp + 8]			; get the changed value
+	mov r11, [rsp + 8]			; get the changed value
 	add rsp, 16					; free space on stack
 
-	mov rdi, r12
+	mov rdi, r11
 	mov rdx, rax
 	call get_value
 
 	.fast_return:
-	pop r12
 	pop rbp
 	ret
