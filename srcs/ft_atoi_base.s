@@ -184,6 +184,7 @@ get_value:
 
 	.end_loop:
 	mov rax, rcx
+	imul rax, r10		; multiply by sign
 	pop rbx
 	ret
 
