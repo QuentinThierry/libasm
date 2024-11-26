@@ -261,91 +261,136 @@ void test_strdup()
 	}
 }
 
-int is_in_base(char c, char *base)
-{
-	int i = 0;
-	while (base[i])
-	{
-		if (c == base[i])
-			return i;
-		i++;
-	}
-	return -1;
-}
-
 // bonus
-
-void test_atoi_base(char *str, char *base)
+void test_atoi_base()
 {
-	printf("%d\n", ft_atoi_base(str, base));
+	// C code translation
+	{
+		// FUNCTION check_base (size <= 1, 2x meme char, +,- ou whitespace)
+		// if (!str || !base)
+		// 	return 0;
+		// int size_base = ft_strlen(base);
+		// if (size_base <= 1)
+		// 	return 0;
+		// for (int i = 0; i < size_base; i++)
+		// {
+		// 	if ((base[i] >= 8 && base[i] <= 13) || base[i] == 32)
+		// 		return 0;
+		// 	for (int j = i + 1; j < size_base; j++)
+		// 	{
+		// 		if (base[i] == base[j])
+		// 			return 0;
+		// 	}
+		// }
 
-	// FUNCTION check_base (size <= 1, 2x meme char, +,- ou whitespace)
-	// if (!str || !base)
-	// 	return 0;
-	// int size_base = ft_strlen(base);
-	// if (size_base <= 1)
-	// 	return 0;
-	// for (int i = 0; i < size_base; i++)
-	// {
-	// 	if ((base[i] >= 8 && base[i] <= 13) || base[i] == 32)
-	// 		return 0;
-	// 	for (int j = i + 1; j < size_base; j++)
-	// 	{
-	// 		if (base[i] == base[j])
-	// 			return 0;
-	// 	}
-	// }
+		// // skip white spaces
+		// int i;
+		// for (i = 0; str[i]; i++)
+		// {
+		// 	if (str[i] < 8 || (str[i] > 13 && str[i] != 32))
+		// 		break;
+		// }
 
+		// // function get_sign
+		// int sign = 1;
+		// for (; str[i]; i++)
+		// {
+		// 	if (str[i] == '+')
+		// 		continue;
+		// 	else if (str[i] == '-')
+		// 		sign *= -1; // neg
+		// 	else
+		// 		break;
+		// }
 
-	// // skip white spaces
-	// int i;
-	// for (i = 0; str[i]; i++)
-	// {
-	// 	if (str[i] < 8 || (str[i] > 13 && str[i] != 32))
-	// 		break;
-	// }
+		// // ft_atoi_base
+		// int pos_char;
+		// int return_value = 0;
+		// while (str[i])
+		// {
+		// 	pos_char = is_in_base(str[i], base);
+		// 	if (pos_char == -1)
+		// 		break;
+		// 	return_value *= size_base;
+		// 	return_value += pos_char;
+		// 	i++;
+		// }
+		// return return_value * sign;
+	}
 
-	// // function get_sign
-	// int sign = 1;
-	// for (; str[i]; i++)
-	// {
-	// 	if (str[i] == '+')
-	// 		continue;
-	// 	else if (str[i] == '-')
-	// 		sign *= -1; // neg
-	// 	else
-	// 		break;
-	// }
-
-	// // ft_atoi_base
-	// int pos_char;
-	// int return_value = 0;
-	// while (str[i])
-	// {
-	// 	pos_char = is_in_base(str[i], base);
-	// 	if (pos_char == -1)
-	// 		break;
-	// 	return_value *= size_base;
-	// 	return_value += pos_char;
-	// 	i++;
-	// }
-	// return return_value * sign;
+	{	// base 10 -> OK 100
+		char *base = "0123456789";
+		char *number = "100";
+		int expected = 100;
+		int my_ret = ft_atoi_base(number, base);
+		printf("expected : %d, got : %d | %s\n", expected, my_ret, assert_equal(expected, my_ret));
+	}
+	{	// base too small -> KO 0
+		char *base = "7";
+		char *number = "109283";
+		int expected = 0;
+		int my_ret = ft_atoi_base(number, base);
+		printf("expected : %d, got : %d | %s\n", expected, my_ret, assert_equal(expected, my_ret));
+	}
+	{	// base with illegal char -> KO 0
+		char *base = "0123456789-";
+		char *number = "109283";
+		int expected = 0;
+		int my_ret = ft_atoi_base(number, base);
+		printf("expected : %d, got : %d | %s\n", expected, my_ret, assert_equal(expected, my_ret));
+	}
+	{	// base 10 with empty nbr -> OK 0
+		char *base = "0123456789";
+		char *number = "";
+		int expected = 0;
+		int my_ret = ft_atoi_base(number, base);
+		printf("expected : %d, got : %d | %s\n", expected, my_ret, assert_equal(expected, my_ret));
+	}
+	{	// base 10 with neg nbr -> OK 1=-100
+		char *base = "0123456789";
+		char *number = "-100";
+		int expected = -100;
+		int my_ret = ft_atoi_base(number, base);
+		printf("expected : %d, got : %d | %s\n", expected, my_ret, assert_equal(expected, my_ret));
+	}
+	{	// base 10 with multiple signs -> OK -100
+		char *base = "0123456789";
+		char *number = "-+--+100";
+		int expected = -100;
+		int my_ret = ft_atoi_base(number, base);
+		printf("expected : %d, got : %d | %s\n", expected, my_ret, assert_equal(expected, my_ret));
+	}
+	{	// base 16 -> OK -262649830
+		char *base = "0123456789ABCDEF";
+		char *number = "---FA7B7E6";
+		int expected = -262649830;
+		int my_ret = ft_atoi_base(number, base);
+		printf("expected : %d, got : %d | %s\n", expected, my_ret, assert_equal(expected, my_ret));
+	}
+	{	// base 32 -> OK -262649830
+		char *base = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
+		char *number = "SALUT";
+		int expected = 29710301;
+		int my_ret = ft_atoi_base(number, base);
+		printf("expected : %d, got : %d | %s\n", expected, my_ret, assert_equal(expected, my_ret));
+	}
 }
 
 
 int main()
 {
-	test_atoi_base("4", "0123");
-	// printf("\e[36m---== ft_strlen ==---\e[0m\n");
-	// test_strlen();
-	// printf("\e[36m---== ft_strcpy ==---\e[0m\n");
-	// test_strcpy();
-	// printf("\e[36m---== ft_strcmp ==---\e[0m\n");
-	// test_strcmp();
-	// printf("\e[36m---== ft_write ==---\e[0m\n");
-	// test_write();
-	// printf("\e[36m---== ft_read ==---\e[0m\n");
-	// test_read();
-	// printf("\e[36m---== ft_strdup ==---\e[0m\n");
-	// test_strdup();
+	printf("\e[36m---== ft_strlen ==---\e[0m\n");
+	test_strlen();
+	printf("\e[36m---== ft_strcpy ==---\e[0m\n");
+	test_strcpy();
+	printf("\e[36m---== ft_strcmp ==---\e[0m\n");
+	test_strcmp();
+	printf("\e[36m---== ft_write ==---\e[0m\n");
+	test_write();
+	printf("\e[36m---== ft_read ==---\e[0m\n");
+	test_read();
+	printf("\e[36m---== ft_strdup ==---\e[0m\n");
+	test_strdup();
+	printf("\e[36m---== ft_atoi_base ==---\e[0m\n");
+	test_atoi_base();
 }
