@@ -131,7 +131,7 @@ get_sign:
 		neg rax
 		jmp .loop
 	
-	.end_loop
+	.end_loop:
 	add [rsp + 16], rcx		; increment the value of the ptr in the stack
 	ret
 
