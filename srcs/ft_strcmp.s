@@ -12,8 +12,6 @@ ft_strcmp:
 		jne done
 		cmp r10b, 0 ; left byte is 0
 		je done
-		cmp r11b, 0 ; right byte is 0
-		je done
 
 		inc rdi
 		inc rsi
