@@ -31,8 +31,10 @@ extern char *ft_strdup(const char *s);
 // BONUS PART
 extern int ft_atoi_base(char *str, char *base);
 extern void ft_list_push_front(t_list **begin_list, void *content);
+extern int ft_list_size(t_list *begin_list);
 
 // UTILS_C
-t_list	*ft_lst_new(void *content);
+t_list *ft_lst_new(void *content);
+void free_list(t_list *begin_list);
 
 #endif
