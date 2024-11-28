@@ -367,8 +367,7 @@ void test_list_push_front()
 		printf("new list \t: %p (d=%d, n=%p) ==> %p (d=%d, n=%p)\n",
 				base_list, *(int *)base_list->data, base_list->next,
 				base_list->next, *(int *)base_list->next->data, base_list->next->next);
-		free(base_list->next);
-		free(base_list);
+		free_list(base_list);
 	}
 	{
 		int next_content = 4422;
@@ -377,7 +376,7 @@ void test_list_push_front()
 		ft_list_push_front(&base_list, &next_content);
 		printf("new list \t: %p (d=%d, n=%p) ==> %p\n",
 				base_list, *(int *)base_list->data, base_list->next, base_list->next);
-		free(base_list);
+		free_list(base_list);
 	}
 	{
 		int nbrs[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -385,17 +384,46 @@ void test_list_push_front()
 		for (int i = 0; i < 10; i++) {
 			ft_list_push_front(&base_list, (nbrs + i));
 		}
+		t_list *begin_cpy = base_list; 
 		while (base_list != NULL) {
 			printf("%d->", *(int *)base_list->data);
-			t_list *tmp = base_list;
 			base_list = base_list->next;
-			free(tmp);
 		}
 		printf("\n");
+		free_list(begin_cpy);
 	}
-
 }
 
+void test_list_size()
+{
+	{
+		int nbrs[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		t_list *base_list = NULL;
+		for (int i = 0; i < 10; i++) {
+			ft_list_push_front(&base_list, (nbrs + i));
+		}
+		int expected_res = 10;
+		int my_res = ft_list_size(base_list);
+		printf("expected : %d, got : %d, | %s\n", expected_res, my_res, assert_equal(my_res, expected_res));
+		free_list(base_list);
+	}
+	{
+		int nbr = 42;
+		t_list *base_list = NULL;
+		ft_list_push_front(&base_list, &nbr);
+		int expected_res = 1;
+		int my_res = ft_list_size(base_list);
+		printf("expected : %d, got : %d, | %s\n", expected_res, my_res, assert_equal(my_res, expected_res));
+		free_list(base_list);
+	}
+	{
+		t_list *base_list = NULL;
+		int expected_res = 0;
+		int my_res = ft_list_size(base_list);
+		printf("expected : %d, got : %d, | %s\n", expected_res, my_res, assert_equal(my_res, expected_res));
+		free_list(base_list);
+	}
+}
 
 int main()
 {
@@ -415,6 +443,8 @@ int main()
 	printf("\n\e[36m---== BONUS PART==---\e[0m\n\n");
 	printf("\e[36m---== ft_atoi_base ==---\e[0m\n");
 	test_atoi_base();
-	printf("\e[36m---== ft_atoi_base ==---\e[0m\n");
+	printf("\e[36m---== ft_list_push_front ==---\e[0m\n");
 	test_list_push_front();
+	printf("\e[36m---== ft_list_size ==---\e[0m\n");
+	test_list_size();
 }
