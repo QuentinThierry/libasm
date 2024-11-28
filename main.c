@@ -1,24 +1,4 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <fcntl.h>
-#include "BIG_STRINGS.h"
-
-#define assert_equal(x, y) (x) == (y) ? "\e[32mTrue\e[0m" : "\e[31mFalse\e[0m"
-#define assert_equal_str(x, y) (strcmp(x, y) == 0) ? "\e[32mTrue\e[0m" : "\e[31mFalse\e[0m"
-#define assert_equal_str3(x, y, z) (strcmp(x, y) == 0) && (strcmp(y, z) == 0) ? "\e[32mTrue\e[0m" : "\e[31mFalse\e[0m"
-
-extern size_t ft_strlen(const char *s);
-extern char *ft_strcpy(char *dest, const char *src);
-extern int ft_strcmp(const char *dest, const char *src);
-extern ssize_t ft_write(int fd, const void *buf, size_t count);
-extern ssize_t ft_read(int fd, void *buf, size_t count);
-extern char *ft_strdup(const char *s);
-
-extern int ft_atoi_base(char *str, char *base);
+#include "libasm.h"
 
 void test_strlen()
 {
@@ -376,9 +356,50 @@ void test_atoi_base()
 	}
 }
 
+void test_list_push_front()
+{
+	{
+		int content = 42;
+		int next_content = 43;
+		t_list *base_list = ft_lst_new(&content);
+		printf("previous list\t: %p (d=%d, n=%p)\n", base_list, *(int *)base_list->data, base_list->next);
+		ft_list_push_front(&base_list, &next_content);
+		printf("new list \t: %p (d=%d, n=%p) ==> %p (d=%d, n=%p)\n",
+				base_list, *(int *)base_list->data, base_list->next,
+				base_list->next, *(int *)base_list->next->data, base_list->next->next);
+		free(base_list->next);
+		free(base_list);
+	}
+	{
+		int next_content = 4422;
+		t_list *base_list = NULL;
+		printf("previous list\t: %p\n", base_list);
+		ft_list_push_front(&base_list, &next_content);
+		printf("new list \t: %p (d=%d, n=%p) ==> %p\n",
+				base_list, *(int *)base_list->data, base_list->next, base_list->next);
+		free(base_list);
+	}
+	{
+		int nbrs[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		t_list *base_list = NULL;
+		for (int i = 0; i < 10; i++) {
+			ft_list_push_front(&base_list, (nbrs + i));
+		}
+		while (base_list != NULL) {
+			printf("%d->", *(int *)base_list->data);
+			t_list *tmp = base_list;
+			base_list = base_list->next;
+			free(tmp);
+		}
+		printf("\n");
+	}
+
+}
+
 
 int main()
 {
+	printf("\n\e[36m---== MANDATORY PART==---\e[0m\n\n");
 	printf("\e[36m---== ft_strlen ==---\e[0m\n");
 	test_strlen();
 	printf("\e[36m---== ft_strcpy ==---\e[0m\n");
@@ -391,6 +412,9 @@ int main()
 	test_read();
 	printf("\e[36m---== ft_strdup ==---\e[0m\n");
 	test_strdup();
+	printf("\n\e[36m---== BONUS PART==---\e[0m\n\n");
 	printf("\e[36m---== ft_atoi_base ==---\e[0m\n");
 	test_atoi_base();
+	printf("\e[36m---== ft_atoi_base ==---\e[0m\n");
+	test_list_push_front();
 }
