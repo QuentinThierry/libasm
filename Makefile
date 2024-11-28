@@ -3,10 +3,11 @@ ASFLAGS= -g -f elf64
 LD=ld
 
 SRCS_DIR=	srcs/
-SRCS_LIST=	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s ft_strdup.s ft_atoi_base.s
+SRCS_LIST=	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s ft_strdup.s ft_atoi_base.s ft_list_push_front.s
 SRCS=	$(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 NAME= libasm.a
+NAME_TEST= libasm.out
 
 OBJ_DIR=	obj/
 OBJ_LIST= ${SRCS_LIST:.s=.o}
@@ -25,8 +26,14 @@ $(NAME): $(OBJ_DIR) $(OBJ)
 $(OBJ_DIR):
 	mkdir -p obj/
 
-test:
-	make && cc -Wall -Wextra main.c -g -L. -lasm && ./a.out
+test: $(NAME_TEST)
+	./$(NAME_TEST)
+
+valgrind_test: $(NAME_TEST)
+	valgrind ./$(NAME_TEST)
+
+$(NAME_TEST): $(NAME) main.c utils.c
+	cc -Wall -Wextra main.c utils.c -g -L. -lasm -o $(NAME_TEST)
 
 clean:
 	rm -rf $(OBJ_DIR)
