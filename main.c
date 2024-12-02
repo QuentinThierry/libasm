@@ -384,9 +384,23 @@ void test_list_push_front()
 		for (int i = 0; i < 10; i++) {
 			ft_list_push_front(&base_list, (nbrs + i));
 		}
-		t_list *begin_cpy = base_list; 
+		t_list *begin_cpy = base_list;
 		while (base_list != NULL) {
 			printf("%d->", *(int *)base_list->data);
+			base_list = base_list->next;
+		}
+		printf("\n");
+		free_list(begin_cpy);
+	}
+	{
+		char *nbrs[10] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+		t_list *base_list = NULL;
+		for (int i = 0; i < 10; i++) {
+			ft_list_push_front(&base_list, nbrs[i]);
+		}
+		t_list *begin_cpy = base_list;
+		while (base_list != NULL) {
+			printf("%s->", (char *)base_list->data);
 			base_list = base_list->next;
 		}
 		printf("\n");
@@ -425,6 +439,71 @@ void test_list_size()
 	}
 }
 
+void test_list_sort()
+{
+	{	// already sorted
+		char *nbrs[4] = {"a", "b", "c", "d"};
+		t_list *base_list = NULL;
+		for (int i = 4 - 1; i >= 0; i--) {
+			ft_list_push_front(&base_list, nbrs[i]);
+		}
+		printf("pre sort ------\t");
+		print_list_str(base_list);
+		ft_list_sort(&base_list, strcmp);
+		printf("after sort :\t");
+		print_list_str(base_list);
+		free_list(base_list);
+	}
+	{	// all reverse
+		char *nbrs[4] = {"d", "c", "b", "a"};
+		t_list *base_list = NULL;
+		for (int i = 4 - 1; i >= 0; i--) {
+			ft_list_push_front(&base_list, nbrs[i]);
+		}
+		printf("pre sort ------\t");
+		print_list_str(base_list);
+		ft_list_sort(&base_list, strcmp);
+		printf("after sort :\t");
+		print_list_str(base_list);
+		free_list(base_list);
+	}
+	{	// random
+		char *nbrs[4] = {"z", "g", "i", "p"};
+		t_list *base_list = NULL;
+		for (int i = 4 - 1; i >= 0; i--) {
+			ft_list_push_front(&base_list, nbrs[i]);
+		}
+		printf("pre sort ------\t");
+		print_list_str(base_list);
+		ft_list_sort(&base_list, strcmp);
+		printf("after sort :\t");
+		print_list_str(base_list);
+		free_list(base_list);
+	}
+	{	// numbers
+		int nbrs[4] = {5, 4, 6, 42};
+		t_list *base_list = NULL;
+		for (int i = 4 - 1; i >= 0; i--) {
+			ft_list_push_front(&base_list, nbrs + i);
+		}
+		printf("pre sort ------\t");
+		print_list_int(base_list);
+		ft_list_sort(&base_list, is_less_than);
+		printf("after sort :\t");
+		print_list_int(base_list);
+		free_list(base_list);
+	}
+	{	// empty
+		t_list *base_list = NULL;
+		printf("pre sort ------\t(empty)");
+		ft_list_sort(&base_list, is_less_than);
+		printf("\nafter sort : \t(empty)");
+		print_list_int(base_list);
+		free_list(base_list);
+	}
+
+}
+
 int main()
 {
 	printf("\n\e[36m---== MANDATORY PART==---\e[0m\n\n");
@@ -447,4 +526,6 @@ int main()
 	test_list_push_front();
 	printf("\e[36m---== ft_list_size ==---\e[0m\n");
 	test_list_size();
+	printf("\e[36m---== ft_list_sort ==---\e[0m\n");
+	test_list_sort();
 }

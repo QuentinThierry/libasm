@@ -32,9 +32,13 @@ extern char *ft_strdup(const char *s);
 extern int ft_atoi_base(char *str, char *base);
 extern void ft_list_push_front(t_list **begin_list, void *content);
 extern int ft_list_size(t_list *begin_list);
+extern int ft_list_sort(t_list **begin_list, int (*cmp)());
 
 // UTILS_C
 t_list *ft_lst_new(void *content);
 void free_list(t_list *begin_list);
+void print_list_str(t_list *list);
+void print_list_int(t_list *list);
+int is_less_than(int a, int b);
 
 #endif

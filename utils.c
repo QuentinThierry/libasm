@@ -19,3 +19,28 @@ void free_list(t_list *begin_list)
 		free(tmp);
 	}
 }
+
+int is_less_than(int a, int b)
+{
+	return a - b;
+}
+
+void print_list_str(t_list *list)
+{
+	while (list)
+	{
+		printf("%s->", (char *)list->data);
+		list = list->next;
+	}
+	printf("\n");
+}
+
+void print_list_int(t_list *list)
+{
+	while (list)
+	{
+		printf("%d->", *(int *)list->data);
+		list = list->next;
+	}
+	printf("\n");
+}

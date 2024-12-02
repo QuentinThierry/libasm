@@ -4,7 +4,8 @@ LD=ld
 
 SRCS_DIR=	srcs/
 SRCS_LIST=	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s\
-			ft_strdup.s ft_atoi_base.s ft_list_push_front.s ft_list_size.s
+			ft_strdup.s ft_atoi_base.s ft_list_push_front.s ft_list_size.s\
+			ft_list_sort.s
 SRCS=	$(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 NAME= libasm.a
