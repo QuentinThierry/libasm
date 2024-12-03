@@ -33,6 +33,7 @@ extern int ft_atoi_base(char *str, char *base);
 extern void ft_list_push_front(t_list **begin_list, void *content);
 extern int ft_list_size(t_list *begin_list);
 extern int ft_list_sort(t_list **begin_list, int (*cmp)());
+extern int ft_list_remove_if(t_list **begin_list, void *dataref, int (*cmp)(), void (*free_fct)(void *));
 
 // UTILS_C
 t_list *ft_lst_new(void *content);
@@ -40,5 +41,7 @@ void free_list(t_list *begin_list);
 void print_list_str(t_list *list);
 void print_list_int(t_list *list);
 int is_less_than(int a, int b);
+int is_less_than_ptr(int *data, int *ref);
+void do_nothing(void *ptr);
 
 #endif

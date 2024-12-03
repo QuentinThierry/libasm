@@ -504,6 +504,24 @@ void test_list_sort()
 
 }
 
+void test_list_remove_if()
+{
+	{
+		int nbrs[6] = {1, 0, 0, 5, 0, 0};
+		int dataref = 0;
+		t_list *base_list = NULL;
+		for (int i = 6 - 1; i >= 0; i--) {
+			ft_list_push_front(&base_list, nbrs + i);
+		}
+		printf("pre remove \t");
+		print_list_int(base_list);
+		ft_list_remove_if(&base_list, &dataref, is_less_than_ptr, do_nothing);
+		printf("after remove :\t");
+		print_list_int(base_list);
+		free_list(base_list);
+	}
+}
+
 int main()
 {
 	printf("\n\e[36m---== MANDATORY PART==---\e[0m\n\n");
@@ -528,4 +546,6 @@ int main()
 	test_list_size();
 	printf("\e[36m---== ft_list_sort ==---\e[0m\n");
 	test_list_sort();
+	printf("\e[36m---== ft_list_remove_if ==---\e[0m\n");
+	test_list_remove_if();
 }

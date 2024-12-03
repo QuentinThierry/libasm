@@ -44,3 +44,15 @@ void print_list_int(t_list *list)
 	}
 	printf("\n");
 }
+
+int is_less_than_ptr(int *data, int *ref)
+{
+	if (*data == *ref)
+		return 0;
+	return 1;
+}
+
+void do_nothing(void *ptr)
+{
+	(void)ptr;
+}
