@@ -481,23 +481,23 @@ void test_list_sort()
 		free_list(base_list);
 	}
 	{	// numbers
-		int nbrs[4] = {5, 4, 6, 42};
+		int nbrs[5] = {88, 4, 42, 6, 42};
 		t_list *base_list = NULL;
-		for (int i = 4 - 1; i >= 0; i--) {
+		for (int i = 5 - 1; i >= 0; i--) {
 			ft_list_push_front(&base_list, nbrs + i);
 		}
 		printf("pre sort ------\t");
 		print_list_int(base_list);
-		ft_list_sort(&base_list, is_less_than);
+		ft_list_sort(&base_list, get_diff_int);
 		printf("after sort :\t");
 		print_list_int(base_list);
 		free_list(base_list);
 	}
 	{	// empty
 		t_list *base_list = NULL;
-		printf("pre sort ------\t(empty)");
-		ft_list_sort(&base_list, is_less_than);
-		printf("\nafter sort : \t(empty)");
+		printf("pre sort ------ (empty)\t");
+		ft_list_sort(&base_list, get_diff_int);
+		printf("\nafter sort : \t");
 		print_list_int(base_list);
 		free_list(base_list);
 	}
@@ -507,15 +507,53 @@ void test_list_sort()
 void test_list_remove_if()
 {
 	{
-		int nbrs[6] = {1, 0, 0, 5, 0, 0};
-		int dataref = 0;
+		int nbrs[6] = {0, 1, 2, 3, 4, 5};
+		int dataref = 42;
 		t_list *base_list = NULL;
 		for (int i = 6 - 1; i >= 0; i--) {
 			ft_list_push_front(&base_list, nbrs + i);
 		}
-		printf("pre remove \t");
+		printf("pre remove ----\t");
 		print_list_int(base_list);
-		ft_list_remove_if(&base_list, &dataref, is_less_than_ptr, do_nothing);
+		ft_list_remove_if(&base_list, &dataref, is_equal_int, do_nothing);
+		printf("after remove :\t");
+		print_list_int(base_list);
+		free_list(base_list);
+	}
+	{
+		int nbrs[6] = {1, 42, 42, 5, 42, 42};
+		int dataref = 42;
+		t_list *base_list = NULL;
+		for (int i = 6 - 1; i >= 0; i--) {
+			ft_list_push_front(&base_list, nbrs + i);
+		}
+		printf("pre remove ----\t");
+		print_list_int(base_list);
+		ft_list_remove_if(&base_list, &dataref, is_equal_int, do_nothing);
+		printf("after remove :\t");
+		print_list_int(base_list);
+		free_list(base_list);
+	}
+	{
+		int nbrs[1] = {1};
+		int dataref = 1;
+		t_list *base_list = NULL;
+		for (int i = 1 - 1; i >= 0; i--) {
+			ft_list_push_front(&base_list, nbrs + i);
+		}
+		printf("pre remove ----\t");
+		print_list_int(base_list);
+		ft_list_remove_if(&base_list, &dataref, is_equal_int, do_nothing);
+		printf("after remove :\t");
+		print_list_int(base_list);
+		free_list(base_list);
+	}
+	{
+		int dataref = 1;
+		t_list *base_list = NULL;
+		printf("pre remove ----\t");
+		print_list_int(base_list);
+		ft_list_remove_if(&base_list, &dataref, is_equal_int, do_nothing);
 		printf("after remove :\t");
 		print_list_int(base_list);
 		free_list(base_list);

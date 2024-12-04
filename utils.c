@@ -20,13 +20,10 @@ void free_list(t_list *begin_list)
 	}
 }
 
-int is_less_than(int a, int b)
-{
-	return a - b;
-}
-
 void print_list_str(t_list *list)
 {
+	if (!list)
+		printf("(empty)");
 	while (list)
 	{
 		printf("%s->", (char *)list->data);
@@ -37,6 +34,8 @@ void print_list_str(t_list *list)
 
 void print_list_int(t_list *list)
 {
+	if (!list)
+		printf("(empty)");
 	while (list)
 	{
 		printf("%d->", *(int *)list->data);
@@ -45,7 +44,12 @@ void print_list_int(t_list *list)
 	printf("\n");
 }
 
-int is_less_than_ptr(int *data, int *ref)
+int get_diff_int(int *data, int *data2)
+{
+	return *data - *data2;
+}
+
+int is_equal_int(int *data, int *ref)
 {
 	if (*data == *ref)
 		return 0;

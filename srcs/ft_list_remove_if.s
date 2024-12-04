@@ -68,14 +68,3 @@ ft_list_remove_if:
 	pop r13
 	pop r12
 	ret
-
-		; if should remove
-			; free elem
-			; if no previous (==NULL)
-				; change **begin_list to elem->next
-				; previous stay NULL
-			; else if previous
-				; previous stay at value
-				; change previous->next to elem->next
-		; else if no remove
-			; previous = elem

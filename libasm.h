@@ -40,8 +40,8 @@ t_list *ft_lst_new(void *content);
 void free_list(t_list *begin_list);
 void print_list_str(t_list *list);
 void print_list_int(t_list *list);
-int is_less_than(int a, int b);
-int is_less_than_ptr(int *data, int *ref);
+int is_equal_int(int *data, int *ref);
+int get_diff_int(int *data, int *data2);
 void do_nothing(void *ptr);
 
 #endif
