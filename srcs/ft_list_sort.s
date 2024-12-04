@@ -2,9 +2,6 @@ section .text
 	global ft_list_sort
 
 
-; rdx, rcx, r8, r9, r10, r11
-; r12, r13, r14, r15
-
 ; rdi=**begin_list, rsi=int (*cmp)(void*, void *)
 ft_list_sort:
 	push r12
