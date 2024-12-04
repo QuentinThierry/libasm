@@ -52,7 +52,9 @@ ft_list_remove_if:
 			.end_had_previous_elem:
 			push qword [r12 + 8]			; save elem->next
 			mov rdi, r12					; free elem
+			sub rsp, 8						; align stack
 			call free
+			add rsp, 8
 			pop r12							; load elem->next in r12
 			jmp .loop
 
